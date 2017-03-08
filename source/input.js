@@ -387,7 +387,7 @@ export default class Input extends Component
 		// Focus the phone number input upon country selection
 		// (do it in a timeout because the `<input/>`
 		//  is hidden while selecting a country)
-		setTimeout(this.focus, 0)
+		// setTimeout(this.focus, 0)
 	}
 
 	// `input-format` `parse` character function
