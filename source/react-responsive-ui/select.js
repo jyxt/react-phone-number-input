@@ -511,7 +511,7 @@ export default class Select extends PureComponent
 	render_selected_item()
 	{
 		const { children, value, label, disabled, autocomplete, concise } = this.props
-		const { expanded, autocomplete_width, autocomplete_input_value } = this.state
+		const { expanded, autocomplete_input_value } = this.state
 
 		const selected_label = this.get_selected_option_label()
 
@@ -526,7 +526,6 @@ export default class Select extends PureComponent
 					value={ autocomplete_input_value }
 					onChange={ this.on_autocomplete_input_change }
 					onKeyDown={ this.on_key_down }
-					style={ { width: autocomplete_width + 'px' } }
 					className={ classNames
 					(
 						'rrui__select__selected',
@@ -771,11 +770,6 @@ export default class Select extends PureComponent
 				autocomplete_input_value: '',
 				filtered_options: options
 			})
-
-			if (!this.state.autocomplete_width)
-			{
-				this.setState({ autocomplete_width: this.get_widest_label_width() })
-			}
 		}
 
 		// Deferring expanding the select upon click
@@ -1177,15 +1171,7 @@ export default class Select extends PureComponent
 
 	get_widest_label_width()
 	{
-		// <ul/> -> <li/> -> <button/>
-		const label = ReactDOM.findDOMNode(this.list).firstChild.firstChild
-
-		const style = getComputedStyle(label)
-
-		const width = parseFloat(style.width)
-		const side_padding = parseFloat(style.paddingLeft)
-
-		return width - 2 * side_padding
+		return this.props.styles.autocompleteWidth
 	}
 
 	on_autocomplete_input_change(event)
