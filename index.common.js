@@ -1,19 +1,19 @@
 'use strict'
 
 var React = require('react')
-var metadata = require('meta.min.json')
+var metadata = require('libphonenumber-js/metadata.min.json')
 
 var Input = require('./custom').default
 
 var Phone = function Phone(props)
 {
   var properties = Object.keys(props).reduce(function(reduced, property)
-  {
-    reduced[property] = props[property]
-    return reduced
+   {
+   	reduced[property] = props[property]
+   	return reduced
   },
-  { metadata: metadata })
-  
+   { metadata: metadata })
+
   return React.createElement(Input, properties)
 }
 
