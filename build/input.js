@@ -48,6 +48,10 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
 var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
@@ -126,19 +130,28 @@ var Input = function (_Component) {
 
 		var _this = (0, _possibleConstructorReturn3.default)(this, (Input.__proto__ || (0, _getPrototypeOf2.default)(Input)).call(this, props));
 
-		_this.state = {};
-		var countries = props.countries,
-		    value = props.value,
-		    dictionary = props.dictionary,
-		    international = props.international,
-		    internationalIcon = props.internationalIcon,
-		    flags = props.flags;
-		var country = props.country;
+		_initialiseProps.call(_this);
+
+		var _this$props = _this.props,
+		    countries = _this$props.countries,
+		    value = _this$props.value,
+		    dictionary = _this$props.dictionary,
+		    international = _this$props.international,
+		    internationalIcon = _this$props.internationalIcon,
+		    flags = _this$props.flags;
+		var country = _this.props.country;
+
+		// Autodetect country if value is set
+		// and is international (which it should be)
+
+		if (!country && value && value[0] === '+') {
+			// Will be left `undefined` in case of non-detection
+			country = (0, _libphonenumberJs.parse)(value).country;
+		}
 
 		// If there will be no "International" option
 		// then a `country` must be selected.
-
-		if (!should_add_international_option(props) && !country) {
+		if (!should_add_international_option(_this.props) && !country) {
 			country = countries[0];
 		}
 
@@ -147,17 +160,21 @@ var Input = function (_Component) {
 
 		// If a phone number `value` is passed then format it
 		if (value) {
-			// Set the currently entered `value`
-			_this.state.value = _this.correct_initial_value_if_neccessary(value, country);
+			// Take note of the current `value` property
+			_this.state.value_property = value;
+			// Set the currently entered `value`.
+			// State `value` is either in international plaintext or just plaintext format.
+			// (e.g. `+78005553535`, `1234567`)
+			_this.state.value = _this.correct_value_depending_on_the_country_selected(value, country);
 		}
 
 		// `<Select/>` options
 		_this.select_options = [];
 
 		// Add the "International" option to the country list (if suitable)
-		if (should_add_international_option(props)) {
+		if (should_add_international_option(_this.props)) {
 			_this.select_options.push({
-				label: from_dictionary('International', props),
+				label: from_dictionary('International', _this.props),
 				icon: flags === false ? undefined : internationalIcon
 			});
 		}
@@ -173,8 +190,8 @@ var Input = function (_Component) {
 
 				_this.select_options.push({
 					value: country_code,
-					label: from_dictionary(country_code, props),
-					icon: get_country_option_icon(country_code, props)
+					label: from_dictionary(country_code, _this.props),
+					icon: get_country_option_icon(country_code, _this.props)
 				});
 			}
 		} catch (err) {
@@ -192,15 +209,6 @@ var Input = function (_Component) {
 			}
 		}
 
-		_this.focus = _this.focus.bind(_this);
-		_this.on_key_down = _this.on_key_down.bind(_this);
-		_this.on_change = _this.on_change.bind(_this);
-		_this.set_country = _this.set_country.bind(_this);
-		_this.parse = _this.parse.bind(_this);
-		_this.format = _this.format.bind(_this);
-
-		_this.country_select_toggled = _this.country_select_toggled.bind(_this);
-		_this.on_country_select_tab_out = _this.on_country_select_tab_out.bind(_this);
 		return _this;
 	}
 
@@ -221,9 +229,11 @@ var Input = function (_Component) {
 
 
 	(0, _createClass3.default)(Input, [{
-		key: 'correct_initial_value_if_neccessary',
-		value: function correct_initial_value_if_neccessary(value, country_code) {
-			var metadata = this.props.metadata;
+		key: 'correct_value_depending_on_the_country_selected',
+		value: function correct_value_depending_on_the_country_selected(value, country_code) {
+			var _props = this.props,
+			    metadata = _props.metadata,
+			    convertToNational = _props.convertToNational;
 
 
 			if (!value) {
@@ -233,7 +243,7 @@ var Input = function (_Component) {
 			// If the country code is specified
 			if (country_code) {
 				// If the value has a leading plus sign
-				if (value[0] === '+') {
+				if (value[0] === '+' && convertToNational) {
 					// If it's a fully-entered phone number
 					// that converts into a valid national number for this country
 					// then the value is set to be that national number.
@@ -279,266 +289,38 @@ var Input = function (_Component) {
 
 		// `<select/>` `onChange` handler
 
-	}, {
-		key: 'set_country',
-		value: function set_country(country_code) {
-			var metadata = this.props.metadata;
-
-			// Previously selected country
-
-			var previous_country_code = this.state.country_code;
-
-			this.set_country_code_value(country_code);
-
-			// Adjust the phone number (`value`)
-			// according to the selected `country_code`
-
-			var value = this.state.value;
-
-			// If switching to a country from International
-			//   If the international number belongs to this country
-			//     Convert it to a national number
-			//   Else
-			//     Trim the leading + sign
-			//
-			// If switching to a country from a country
-			//   If the value has a leading + sign
-			//     If the international number belongs to this country
-			//       Convert it to a national number
-			//     Else
-			//       Trim the leading + sign
-			//   Else
-			//     The value stays as it is
-			//
-			// If switching to International from a country
-			//   If the value has a leading + sign
-			//     The value stays as it is
-			//   Else
-			//     Take the international plaintext value
-
-			if (value) {
-				// If switching to a country from International
-				if (!previous_country_code && country_code) {
-					// The value is international plaintext
-					var parsed = (0, _libphonenumberJs.parse)(value, metadata);
-
-					// If it's for this country,
-					// then convert it to a national number
-					if (parsed.country === country_code) {
-						value = this.format(parsed.phone, country_code).text;
-					}
-					// Else just trim the + sign
-					else {
-							value = value.slice(1);
-						}
-				}
-
-				if (previous_country_code && country_code) {
-					if (value[0] === '+') {
-						var _parsed = (0, _libphonenumberJs.parse)(value, metadata);
-
-						if (_parsed.country === country_code) {
-							value = this.format(_parsed.phone, country_code).text;
-						} else {
-							value = value.slice(1);
-						}
-					}
-				}
-
-				// If switching to International from a country
-				if (previous_country_code && !country_code) {
-					// If no leading + sign
-					if (value[0] !== '+') {
-						// Take the international plaintext value
-						var national_number = parse_partial_number(value, previous_country_code, metadata).national_number;
-						value = (0, _libphonenumberJs.format)(national_number, previous_country_code, 'International_plaintext', metadata);
-					}
-				}
-
-				// Update the adjusted `value`
-				// and update `this.props.value` (in e.164 phone number format)
-				// according to the new `this.state.value`.
-				// (keep them in sync)
-				this.on_change(value, country_code);
-			}
-
-			// Focus the phone number input upon country selection
-			// (do it in a timeout because the `<input/>`
-			//  is hidden while selecting a country)
-			// setTimeout(this.focus, 0)
-		}
 
 		// `input-format` `parse` character function
 		// https://github.com/halt-hammerzeit/input-format
 
-	}, {
-		key: 'parse',
-		value: function parse(character, value) {
-			var countries = this.props.countries;
-
-
-			if (character === '+') {
-				// Only allow a leading `+`
-				if (!value) {
-					// If the "International" option is available
-					// then allow the leading `+` because it's meant to be this way.
-					//
-					// Otherwise, the leading `+` will either erase all subsequent digits
-					// (if they're not appropriate for the selected country)
-					// or the subsequent digits (if any) will join the `+`
-					// forming an international phone number. Because a user
-					// might be comfortable with entering an international phone number
-					// (i.e. with country code) rather than the local one.
-					// Therefore such possibility is given.
-					//
-					return character;
-				}
-			}
-			// For digits
-			else if (character >= '0' && character <= '9') {
-					var metadata = this.props.metadata;
-					var country_code = this.state.country_code;
-
-					// If the "International" option is not available
-					// and if the value has a leading `+`
-					// then it means that the phone number being entered
-					// is an international one, so only allow the country phone code
-					// for the selected country to be entered.
-
-					if (!should_add_international_option(this.props) && value && value[0] === '+') {
-						if (!could_phone_number_belong_to_country(value + character, country_code, metadata)) {
-							return;
-						}
-
-						return character;
-					}
-
-					return character;
-				}
-		}
 
 		// `input-format` `format` function
 		// https://github.com/halt-hammerzeit/input-format
 
-	}, {
-		key: 'format',
-		value: function format(value) {
-			var country_code = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.state.country_code;
-			var metadata = this.props.metadata;
-
-			// `value` is already parsed input, i.e.
-			// either International plaintext phone number
-			// or just local phone number digits.
-
-			// "As you type" formatter
-
-			var formatter = new _libphonenumberJs.as_you_type(country_code, metadata);
-
-			// Is used to check if a country code can already be derived
-			this.formatter = formatter;
-
-			// Format phone number
-			var text = formatter.input(value);
-
-			return { text: text, template: formatter.template };
-		}
 
 		// Can be called externally
 
-	}, {
-		key: 'focus',
-		value: function focus() {
-			_reactDom2.default.findDOMNode(this.input).focus();
-		}
 
 		// `<input/>` `onKeyDown` handler
 
-	}, {
-		key: 'on_key_down',
-		value: function on_key_down(event) {
-			var onKeyDown = this.props.onKeyDown;
-
-			// Expand country `<select/>`` on "Down arrow" key press
-
-			if (event.keyCode === 40) {
-				this.select.toggle();
-			}
-
-			if (onKeyDown) {
-				onKeyDown(event);
-			}
-		}
 
 		// `<input/>` `onChange` handler.
 		// Updates `this.props.value` (in e.164 phone number format)
 		// according to the new `this.state.value`.
 		// (keeps them in sync)
 
-	}, {
-		key: 'on_change',
-		value: function on_change(value) {
-			var country_code = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.state.country_code;
-			var _props = this.props,
-			    metadata = _props.metadata,
-			    onChange = _props.onChange;
-
-			// If the `<input/>` is empty then just exit
-
-			if (!value) {
-				this.setState({ value: value });
-				return onChange(value);
-			}
-
-			// If a phone number is being input as an international one
-			// and the country code can already be derived,
-			// then switch the country.
-			// (`001` is a special "non-geograpical entity" code in `libphonenumber` library)
-			if (value[0] === '+' && this.formatter.country && this.formatter.country !== '001') {
-				country_code = this.formatter.country;
-				this.set_country_code_value(country_code);
-			}
-
-			// If "International" mode is selected
-			// and the `value` doesn't start with a + sign,
-			// then prepend it to the `value`.
-			if (value[0] !== '+' && !country_code) {
-				value = '+' + value;
-			}
-
-			// Convert `value` to E.164 phone number format
-			// and write it to `this.props.value`.
-			onChange(e164(value, country_code, metadata));
-
-			// Update the `value`
-			this.setState({ value: value });
-		}
 
 		// When country `<select/>` is toggled
 
-	}, {
-		key: 'country_select_toggled',
-		value: function country_select_toggled(is_shown) {
-			this.setState({ country_select_is_shown: is_shown });
-		}
 
 		// Focuses the `<input/>` field
 		// on tab out of the country `<select/>`
 
 	}, {
-		key: 'on_country_select_tab_out',
-		value: function on_country_select_tab_out(event) {
-			event.preventDefault();
+		key: 'can_change_country',
 
-			// Focus the phone number input upon country selection
-			// (do it in a timeout because the `<input/>`
-			//  is hidden while selecting a country)
-			setTimeout(this.focus, 0);
-		}
 
 		// Can a user change the default country or not.
-
-	}, {
-		key: 'can_change_country',
 		value: function can_change_country() {
 			var countries = this.props.countries;
 
@@ -577,8 +359,36 @@ var Input = function (_Component) {
 					// If the passed `country` allowed then update it
 					if (countries.indexOf(new_props.country) !== -1) {
 						// Set the new `country`
-						this.set_country(new_props.country);
+						this.set_country(new_props.country, false);
 					}
+				}
+			}
+
+			// This code is executed:
+			// * after `onChange` is called
+			// * if the `value` was eternally set
+			if (new_props.value !== value) {
+				// Ignore self `onChange` calls
+				// (because the library called `onChange` by itself).
+				// Because if the current `value` property representation
+				// corresponds to `new_props.value`, then there's no need to update anything.
+				if (new_props.value !== this.state.value_property) {
+					// Update the `value` because it was externally set
+
+					// Country code gets updated too
+					var country_code = this.state.country_code;
+
+					// Autodetect country if value is set
+					// and is international (which it should be)
+					if (new_props.value && new_props.value[0] === '+') {
+						// `parse().country` will be `undefined` in case of non-detection
+						country_code = (0, _libphonenumberJs.parse)(new_props.value).country || country_code;
+					}
+
+					this.setState({
+						country_code: country_code,
+						value: this.correct_value_depending_on_the_country_selected(new_props.value, country_code)
+					});
 				}
 			}
 		}
@@ -598,32 +408,39 @@ var Input = function (_Component) {
 			    onCountryChange = _props3.onCountryChange,
 			    flags = _props3.flags,
 			    flagsPath = _props3.flagsPath,
+			    convertToNational = _props3.convertToNational,
+			    nativeExpanded = _props3.nativeExpanded,
 			    disabled = _props3.disabled,
+			    selectTabIndex = _props3.selectTabIndex,
+			    inputTabIndex = _props3.inputTabIndex,
 			    style = _props3.style,
 			    className = _props3.className,
 			    metadata = _props3.metadata,
-			    input_props = (0, _objectWithoutProperties3.default)(_props3, ['dictionary', 'saveOnIcons', 'showCountrySelect', 'international', 'internationalIcon', 'country', 'countries', 'onCountryChange', 'flags', 'flagsPath', 'disabled', 'style', 'className', 'metadata']);
-			var country_select_is_shown = this.state.country_select_is_shown;
+			    input_props = (0, _objectWithoutProperties3.default)(_props3, ['dictionary', 'saveOnIcons', 'showCountrySelect', 'international', 'internationalIcon', 'country', 'countries', 'onCountryChange', 'flags', 'flagsPath', 'convertToNational', 'nativeExpanded', 'disabled', 'selectTabIndex', 'inputTabIndex', 'style', 'className', 'metadata']);
+			var _state = this.state,
+			    value = _state.value,
+			    country_code = _state.country_code,
+			    country_select_is_shown = _state.country_select_is_shown;
 
 
 			var markup = _react2.default.createElement(
 				'div',
-				{ style: style, className: (0, _classnames2.default)('react-phone-number-input', className, {
-						'react-phone-number-input--valid': this.formatter && this.formatter.valid
-					}) },
+				{ style: style, className: (0, _classnames2.default)('react-phone-number-input', className) },
 				showCountrySelect && this.can_change_country() && _react2.default.createElement(_reactResponsiveUi.Select, {
 					ref: function ref(_ref) {
 						return _this2.select = _ref;
 					},
-					value: this.state.country_code,
+					value: country_code,
 					options: this.select_options,
 					onChange: this.set_country,
 					disabled: disabled,
 					onToggle: this.country_select_toggled,
 					onTabOut: this.on_country_select_tab_out,
+					nativeExpanded: nativeExpanded,
 					autocomplete: true,
 					autocompleteShowAll: true,
 					concise: true,
+					tabIndex: selectTabIndex,
 					focusUponSelection: false,
 					saveOnIcons: saveOnIcons,
 					name: input_props.name ? input_props.name + '__country' : undefined,
@@ -633,16 +450,15 @@ var Input = function (_Component) {
 					ref: function ref(_ref2) {
 						return _this2.input = _ref2;
 					},
-					value: this.state.value,
+					value: value,
 					onChange: this.on_change,
 					disabled: disabled,
 					type: 'tel',
+					tabIndex: inputTabIndex,
 					parse: this.parse,
 					format: this.format,
 					onKeyDown: this.on_key_down,
-					className: (0, _classnames2.default)('react-phone-number-input__phone', {
-						'react-phone-number-input__phone--valid': this.formatter && this.formatter.valid
-					}),
+					className: (0, _classnames2.default)('rrui__input', 'react-phone-number-input__phone'),
 					style: input_style }))
 			);
 
@@ -664,11 +480,11 @@ Input.propTypes = {
 	// Phone number `value`.
 	// Is a plaintext international phone number
 	// (e.g. "+12223333333" for USA)
-	value: _react.PropTypes.string,
+	value: _propTypes2.default.string,
 
 	// This handler is called each time
 	// the phone number <input/> changes its textual value.
-	onChange: _react.PropTypes.func.isRequired,
+	onChange: _propTypes2.default.func.isRequired,
 
 	// This `onBlur` interceptor is a workaround for `redux-form`,
 	// so that it gets a parsed `value` in its `onBlur` handler,
@@ -676,67 +492,81 @@ Input.propTypes = {
 	// (`redux-form` passed `onBlur` to this component
 	//  and this component intercepts that `onBlur`
 	//  to make sure it works correctly with `redux-form`)
-	onBlur: _react.PropTypes.func,
+	onBlur: _propTypes2.default.func,
 
 	// Set `onKeyDown` handler.
 	// Can be used in special cases to handle e.g. enter pressed
-	onKeyDown: _react.PropTypes.func,
+	onKeyDown: _propTypes2.default.func,
 
 	// Disables both the <input/> and the <select/>
 	// (is `false` by default)
-	disabled: _react.PropTypes.bool.isRequired,
+	disabled: _propTypes2.default.bool.isRequired,
 
 	// Two-letter country code
 	// to be used as the default country
 	// for local (non-international) phone numbers.
-	country: _react.PropTypes.string,
+	country: _propTypes2.default.string,
 
 	// Is called when the selected country changes
 	// (either by a user manually, or by autoparsing
 	//  an international phone number being input).
 	// This handler does not need to update the `country` property.
 	// It's simply a listener for those who might need that for whatever purpose.
-	onCountryChange: _react.PropTypes.func,
+	onCountryChange: _propTypes2.default.func,
 
 	// Localization dictionary:
 	// `{ International: 'Международный', RU: 'Россия', US: 'США', ... }`
-	dictionary: _react.PropTypes.objectOf(_react.PropTypes.string),
+	dictionary: _propTypes2.default.objectOf(_propTypes2.default.string),
 
 	// An optional list of allowed countries
-	countries: _react.PropTypes.arrayOf(_react.PropTypes.string).isRequired,
+	countries: _propTypes2.default.arrayOf(_propTypes2.default.string).isRequired,
 
 	// Custom national flag icons
-	flags: _react.PropTypes.oneOfType([_react.PropTypes.objectOf(_react2.default.PropTypes.element), _react.PropTypes.bool]),
+	flags: _propTypes2.default.oneOfType([_propTypes2.default.objectOf(_propTypes2.default.element), _propTypes2.default.bool]),
 
 	// A base URL path for national flag SVG icons.
 	// By default it uses the ones from `flag-icon-css` github repo.
-	flagsPath: _react.PropTypes.string.isRequired,
+	flagsPath: _propTypes2.default.string.isRequired,
+
+	// Whether to use native `<select/>` when expanded
+	nativeExpanded: _propTypes2.default.bool.isRequired,
 
 	// If set to `false`, then country flags will be shown
 	// for all countries in the options list
 	// (not just for selected country).
-	saveOnIcons: _react.PropTypes.bool.isRequired,
+	saveOnIcons: _propTypes2.default.bool.isRequired,
 
 	// Whether to show country `<Select/>`
 	// (is `true` by default)
-	showCountrySelect: _react.PropTypes.bool.isRequired,
+	showCountrySelect: _propTypes2.default.bool.isRequired,
 
 	// Whether to add the "International" option
 	// to the list of countries.
-	international: _react.PropTypes.bool,
+	international: _propTypes2.default.bool,
 
 	// Custom "International" phone number type icon.
-	internationalIcon: _react.PropTypes.element.isRequired,
+	internationalIcon: _propTypes2.default.element.isRequired,
+
+	// Should the initially passed phone number `value`
+	// be converted to a national phone number for its country.
+	// (is `true` by default)
+	convertToNational: _propTypes2.default.bool.isRequired,
+
+	// HTML `tabindex` attribute for the country select
+	selectTabIndex: _propTypes2.default.number,
+
+	// HTML `tabindex` attribute for the phone number input
+	inputTabIndex: _propTypes2.default.number,
 
 	// CSS style object
-	style: _react.PropTypes.object,
+	style: _propTypes2.default.object,
 
 	// CSS class
-	className: _react.PropTypes.string,
+	className: _propTypes2.default.string,
 
 	// `libphonenumber-js` metadata
-	metadata: _react.PropTypes.shape({
-		countries: _react.PropTypes.object.isRequired
+	metadata: _propTypes2.default.shape({
+		countries: _propTypes2.default.object.isRequired
 	}).isRequired
 };
 Input.defaultProps = {
@@ -759,14 +589,279 @@ Input.defaultProps = {
 	// Custom country names
 	dictionary: {},
 
+	// Whether to use native `<select/>` when expanded
+	nativeExpanded: false,
+
 	// Don't show flags for all countries in the options list
 	// (show it just for selected country).
 	// (to save user's traffic because all flags are about 3 MegaBytes)
 	saveOnIcons: true,
 
 	// Show country `<Select/>` by default
-	showCountrySelect: true
+	showCountrySelect: true,
+
+	// Convert the initially passed phone number `value`
+	// to a national phone number for its country.
+	convertToNational: true
 };
+
+var _initialiseProps = function _initialiseProps() {
+	var _this3 = this;
+
+	this.state = {};
+
+	this.set_country = function (country_code, focus) {
+		var metadata = _this3.props.metadata;
+
+		// Previously selected country
+
+		var previous_country_code = _this3.state.country_code;
+
+		_this3.set_country_code_value(country_code);
+
+		// Adjust the phone number (`value`)
+		// according to the selected `country_code`
+
+		var value = _this3.state.value;
+
+		// If switching to a country from International
+		//   If the international number belongs to this country
+		//     Convert it to a national number
+		//   Else
+		//     Trim the leading + sign
+		//
+		// If switching to a country from a country
+		//   If the value has a leading + sign
+		//     If the international number belongs to this country
+		//       Convert it to a national number
+		//     Else
+		//       Trim the leading + sign
+		//   Else
+		//     The value stays as it is
+		//
+		// If switching to International from a country
+		//   If the value has a leading + sign
+		//     The value stays as it is
+		//   Else
+		//     Take the international plaintext value
+
+		if (value) {
+			// If switching to a country from International
+			if (!previous_country_code && country_code) {
+				// The value is international plaintext
+				var parsed = (0, _libphonenumberJs.parse)(value, metadata);
+
+				// If it's for this country,
+				// then convert it to a national number
+				if (parsed.country === country_code) {
+					value = _this3.format(parsed.phone, country_code).text;
+				}
+				// Else just trim the + sign
+				else {
+						value = value.slice(1);
+					}
+			}
+
+			if (previous_country_code && country_code) {
+				if (value[0] === '+') {
+					var _parsed = (0, _libphonenumberJs.parse)(value, metadata);
+
+					if (_parsed.country === country_code) {
+						value = _this3.format(_parsed.phone, country_code).text;
+					} else {
+						value = value.slice(1);
+					}
+				}
+			}
+
+			// If switching to International from a country
+			if (previous_country_code && !country_code) {
+				// If no leading + sign
+				if (value[0] !== '+') {
+					// Take the international plaintext value
+					var national_number = parse_partial_number(value, previous_country_code, metadata).national_number;
+					value = (0, _libphonenumberJs.format)(national_number, previous_country_code, 'International_plaintext', metadata);
+				}
+			}
+
+			// Update the adjusted `value`
+			// and update `this.props.value` (in e.164 phone number format)
+			// according to the new `this.state.value`.
+			// (keep them in sync)
+			_this3.on_change(value, country_code, true);
+		}
+
+		// Focus the phone number input upon country selection
+		// (do it in a timeout because the `<input/>`
+		//  is hidden while selecting a country)
+		if (focus !== false) {
+			setTimeout(_this3.focus, 0);
+		}
+	};
+
+	this.parse = function (character, value) {
+		var countries = _this3.props.countries;
+
+
+		if (character === '+') {
+			// Only allow a leading `+`
+			if (!value) {
+				// If the "International" option is available
+				// then allow the leading `+` because it's meant to be this way.
+				//
+				// Otherwise, the leading `+` will either erase all subsequent digits
+				// (if they're not appropriate for the selected country)
+				// or the subsequent digits (if any) will join the `+`
+				// forming an international phone number. Because a user
+				// might be comfortable with entering an international phone number
+				// (i.e. with country code) rather than the local one.
+				// Therefore such possibility is given.
+				//
+				return character;
+			}
+		}
+		// For digits
+		else if (character >= '0' && character <= '9') {
+				var metadata = _this3.props.metadata;
+				var country_code = _this3.state.country_code;
+
+				// If the "International" option is not available
+				// and if the value has a leading `+`
+				// then it means that the phone number being entered
+				// is an international one, so only allow the country phone code
+				// for the selected country to be entered.
+
+				if (!should_add_international_option(_this3.props) && value && value[0] === '+') {
+					if (!could_phone_number_belong_to_country(value + character, country_code, metadata)) {
+						return;
+					}
+
+					return character;
+				}
+
+				return character;
+			}
+	};
+
+	this.format = function (value) {
+		var country_code = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _this3.state.country_code;
+		var metadata = _this3.props.metadata;
+
+		// `value` is already parsed input, i.e.
+		// either International plaintext phone number
+		// or just local phone number digits.
+
+		// "As you type" formatter
+
+		var formatter = new _libphonenumberJs.as_you_type(country_code, metadata);
+
+		// Is used to check if a country code can already be derived
+		_this3.formatter = formatter;
+
+		// Format phone number
+		var text = formatter.input(value);
+
+		return { text: text, template: formatter.template };
+	};
+
+	this.focus = function () {
+		_reactDom2.default.findDOMNode(_this3.input).focus();
+	};
+
+	this.on_key_down = function (event) {
+		var onKeyDown = _this3.props.onKeyDown;
+
+		// Expand country `<select/>`` on "Down arrow" key press
+
+		if (event.keyCode === 40) {
+			_this3.select.toggle();
+		}
+
+		if (onKeyDown) {
+			onKeyDown(event);
+		}
+	};
+
+	this.on_change = function (value) {
+		var country_code = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _this3.state.country_code;
+		var changed_country = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+		var _props4 = _this3.props,
+		    metadata = _props4.metadata,
+		    onChange = _props4.onChange;
+
+		// If the `<input/>` is empty then just exit
+
+		if (!value) {
+			_this3.setState({
+				// State `value` is the parsed input value
+				// (e.g. `+78005553535`, `1234567`).
+				value: value,
+				// `value_property` holds the `value` property value
+				// which is being set by this library.
+				value_property: value
+			},
+			// Write the new `this.props.value`.
+			function () {
+				return onChange(value);
+			});
+		}
+
+		// For international phone number
+		if (value[0] === '+') {
+			// If an international phone number is being erased up to the first `+` sign
+			// or if an international phone number is just starting (with a `+` sign)
+			// then unset the current country because it's clear that a user intends to change it.
+			if (value.length === 1) {
+				country_code = undefined;
+				_this3.set_country_code_value(country_code);
+			}
+			// If a phone number is being input as an international one
+			// and the country code can already be derived,
+			// then switch the country.
+			// (`001` is a special "non-geograpical entity" code in `libphonenumber` library)
+			else if (!changed_country && _this3.formatter.country && _this3.formatter.country !== '001') {
+					country_code = _this3.formatter.country;
+					_this3.set_country_code_value(country_code);
+				}
+		}
+		// If "International" mode is selected
+		// and the `value` doesn't start with a + sign,
+		// then prepend it to the `value`.
+		else if (!country_code) {
+				value = '+' + value;
+			}
+
+		// Convert `value` to E.164 phone number format
+		var value_property = e164(value, country_code, metadata);
+
+		_this3.setState({
+			// State `value` is the parsed input value
+			// (e.g. `+78005553535`, `1234567`).
+			value: value,
+			// `value_property` holds the `value` property value
+			// which is being set by this library.
+			value_property: value_property
+		},
+		// Write the new `this.props.value`.
+		function () {
+			return onChange(value_property);
+		});
+	};
+
+	this.country_select_toggled = function (is_shown) {
+		_this3.setState({ country_select_is_shown: is_shown });
+	};
+
+	this.on_country_select_tab_out = function (event) {
+		event.preventDefault();
+
+		// Focus the phone number input upon country selection
+		// (do it in a timeout because the `<input/>`
+		//  is hidden while selecting a country)
+		setTimeout(_this3.focus, 0);
+	};
+};
+
 exports.default = Input;
 function parse_partial_number(value, country_code, metadata) {
 	// "As you type" formatter
