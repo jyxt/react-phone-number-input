@@ -13,6 +13,7 @@
     "classnames": "^2.2.5",
     "input-format": "^0.1.3",
     "libphonenumber-js": "https://github.com/jyxt/libphonenumber-js",
+    "prop-types": "^15.5.8",
     "react-styling": "^1.6.1"
   },
   "devDependencies": {
