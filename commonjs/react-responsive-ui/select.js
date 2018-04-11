@@ -3,36 +3,13 @@
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+exports.default = undefined;
 
-var _taggedTemplateLiteral2 = require('babel-runtime/helpers/taggedTemplateLiteral');
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _taggedTemplateLiteral3 = _interopRequireDefault(_taggedTemplateLiteral2);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _extends2 = require('babel-runtime/helpers/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
-
-var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _templateObject = (0, _taggedTemplateLiteral3.default)(['\n\twrapper\n\t\tposition   : relative\n\t\tdisplay    : inline-block\n\t\t// text-align : inherit\n\n\t\t-webkit-user-select : none\n\t\t-moz-user-select    : none\n\t\t-ms-user-select     : none\n\t\tuser-select         : none\n\n\tarrow\n\t\tdisplay  : inline-block\n\n\tlist\n\t\tposition        : absolute\n\t\tz-index         : 1\n\t\tmargin-top      : 0\n\t\tmargin-bottom   : 0\n\t\tpadding         : 0\n\t\tlist-style-type : none\n\t\toverflow-x      : hidden\n\n\t\t&downward\n\t\t\t// when html page is overflown by a long list\n\t\t\t// this bottom margin takes effect\n\t\t\tmargin-bottom : 1em\n\n\t\t&upward\n\t\t\tbottom: 100%\n\n\t\t\t// when html page is overflown by a long list\n\t\t\t// this top margin takes effect\n\t\t\tmargin-top : 1em\n\n\tlist_item\n\t\tdisplay     : inline-block\n\t\twhite-space : nowrap\n\n\tmenu_toggler\n\t\tdisplay : inline-block\n\n\tseparator\n\t\tpadding     : 0\n\t\tline-height : 0\n\t\tfont-size   : 0\n'], ['\n\twrapper\n\t\tposition   : relative\n\t\tdisplay    : inline-block\n\t\t// text-align : inherit\n\n\t\t-webkit-user-select : none\n\t\t-moz-user-select    : none\n\t\t-ms-user-select     : none\n\t\tuser-select         : none\n\n\tarrow\n\t\tdisplay  : inline-block\n\n\tlist\n\t\tposition        : absolute\n\t\tz-index         : 1\n\t\tmargin-top      : 0\n\t\tmargin-bottom   : 0\n\t\tpadding         : 0\n\t\tlist-style-type : none\n\t\toverflow-x      : hidden\n\n\t\t&downward\n\t\t\t// when html page is overflown by a long list\n\t\t\t// this bottom margin takes effect\n\t\t\tmargin-bottom : 1em\n\n\t\t&upward\n\t\t\tbottom: 100%\n\n\t\t\t// when html page is overflown by a long list\n\t\t\t// this top margin takes effect\n\t\t\tmargin-top : 1em\n\n\tlist_item\n\t\tdisplay     : inline-block\n\t\twhite-space : nowrap\n\n\tmenu_toggler\n\t\tdisplay : inline-block\n\n\tseparator\n\t\tpadding     : 0\n\t\tline-height : 0\n\t\tfont-size   : 0\n']);
+var _class, _temp;
 
 // WHEN THIS SELECT COMPONENT IS GONNA BE RE-COPY-PASTED FROM REACT-RESPONSIVE-UI
 // THIS COULD BE POTENTIALLY A BREAKING CHANGE DUE TO STYLES BEING MOVED FROM INLINE TO CSS.
@@ -44,6 +21,8 @@ var _templateObject = (0, _taggedTemplateLiteral3.default)(['\n\twrapper\n\t\tpo
 
 
 // https://github.com/halt-hammerzeit/react-responsive-ui/blob/master/source/select.js
+
+var _templateObject = _taggedTemplateLiteral(['\n\twrapper\n\t\tposition   : relative\n\t\tdisplay    : inline-block\n\t\t// text-align : inherit\n\n\t\t-webkit-user-select : none\n\t\t-moz-user-select    : none\n\t\t-ms-user-select     : none\n\t\tuser-select         : none\n\n\tarrow\n\t\tdisplay  : inline-block\n\n\tlist\n\t\tposition        : absolute\n\t\tz-index         : 1\n\t\tmargin-top      : 0\n\t\tmargin-bottom   : 0\n\t\tpadding         : 0\n\t\tlist-style-type : none\n\t\toverflow-x      : hidden\n\n\t\t&downward\n\t\t\t// when html page is overflown by a long list\n\t\t\t// this bottom margin takes effect\n\t\t\tmargin-bottom : 1em\n\n\t\t&upward\n\t\t\tbottom: 100%\n\n\t\t\t// when html page is overflown by a long list\n\t\t\t// this top margin takes effect\n\t\t\tmargin-top : 1em\n\n\tlist_item\n\t\tdisplay     : inline-block\n\t\twhite-space : nowrap\n\n\tmenu_toggler\n\t\tdisplay : inline-block\n\n\tseparator\n\t\tpadding     : 0\n\t\tline-height : 0\n\t\tfont-size   : 0\n'], ['\n\twrapper\n\t\tposition   : relative\n\t\tdisplay    : inline-block\n\t\t// text-align : inherit\n\n\t\t-webkit-user-select : none\n\t\t-moz-user-select    : none\n\t\t-ms-user-select     : none\n\t\tuser-select         : none\n\n\tarrow\n\t\tdisplay  : inline-block\n\n\tlist\n\t\tposition        : absolute\n\t\tz-index         : 1\n\t\tmargin-top      : 0\n\t\tmargin-bottom   : 0\n\t\tpadding         : 0\n\t\tlist-style-type : none\n\t\toverflow-x      : hidden\n\n\t\t&downward\n\t\t\t// when html page is overflown by a long list\n\t\t\t// this bottom margin takes effect\n\t\t\tmargin-bottom : 1em\n\n\t\t&upward\n\t\t\tbottom: 100%\n\n\t\t\t// when html page is overflown by a long list\n\t\t\t// this top margin takes effect\n\t\t\tmargin-top : 1em\n\n\tlist_item\n\t\tdisplay     : inline-block\n\t\twhite-space : nowrap\n\n\tmenu_toggler\n\t\tdisplay : inline-block\n\n\tseparator\n\t\tpadding     : 0\n\t\tline-height : 0\n\t\tfont-size   : 0\n']);
 
 var _react = require('react');
 
@@ -63,6 +42,14 @@ var _dom = require('./misc/dom');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 // Possible enhancements:
 //
 //  * If the menu is close to a screen edge,
@@ -77,15 +64,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // (And also to stretch the selected option with no `label`)
 var Zero_width_space = '\u200B';
 
-var Select = function (_PureComponent) {
-	(0, _inherits3.default)(Select, _PureComponent);
+var Select = (_temp = _class = function (_PureComponent) {
+	_inherits(Select, _PureComponent);
 
 	function Select(props) {
-		(0, _classCallCheck3.default)(this, Select);
+		_classCallCheck(this, Select);
 
 		// Shouldn't memory leak because
 		// the set of options is assumed to be constant.
-		var _this = (0, _possibleConstructorReturn3.default)(this, (Select.__proto__ || (0, _getPrototypeOf2.default)(Select)).call(this, props));
+		var _this = _possibleConstructorReturn(this, (Select.__proto__ || Object.getPrototypeOf(Select)).call(this, props));
 
 		_this.state = {};
 		_this.options = {};
@@ -138,7 +125,7 @@ var Select = function (_PureComponent) {
 	// Client side rendering, javascript is enabled
 
 
-	(0, _createClass3.default)(Select, [{
+	_createClass(Select, [{
 		key: 'componentDidMount',
 		value: function componentDidMount() {
 			document.addEventListener('click', this.document_clicked);
@@ -198,7 +185,7 @@ var Select = function (_PureComponent) {
 			var list_style = upward ? styles.list_upward : styles.list_downward;
 
 			// Will be altered
-			list_style = (0, _extends3.default)({}, list_style);
+			list_style = _extends({}, list_style);
 
 			switch (alignment) {
 				case 'left':
@@ -240,7 +227,7 @@ var Select = function (_PureComponent) {
 					});
 				}
 
-			var wrapper_style = (0, _extends3.default)({}, styles.wrapper, { textAlign: alignment });
+			var wrapper_style = _extends({}, styles.wrapper, { textAlign: alignment });
 
 			var markup = _react2.default.createElement(
 				'div',
@@ -249,7 +236,7 @@ var Select = function (_PureComponent) {
 						return _this2.select = _ref4;
 					},
 					onKeyDown: this.on_key_down_in_container,
-					style: style ? (0, _extends3.default)({}, wrapper_style, style) : wrapper_style,
+					style: style ? _extends({}, wrapper_style, style) : wrapper_style,
 					className: (0, _classnames2.default)(className, 'rrui__select', {
 						'rrui__rich': fallback,
 						'rrui__select--upward': upward,
@@ -323,7 +310,7 @@ var Select = function (_PureComponent) {
 			//
 			// a hack to restore padding-right taken up by a vertical scrollbar
 			if (overflow && scrollbarPadding) {
-				item_style = (0, _extends3.default)({}, styles.list.item);
+				item_style = _extends({}, styles.list.item);
 
 				item_style.marginRight = (0, _dom.get_scrollbar_width)() + 'px';
 			}
@@ -334,7 +321,7 @@ var Select = function (_PureComponent) {
 			// then enhance those elements with extra props.
 			if (element) {
 				var extra_props = {
-					style: (0, _extends3.default)({}, item_style, element.props.style),
+					style: _extends({}, item_style, element.props.style),
 					className: (0, _classnames2.default)('rrui__select__option', {
 						'rrui__select__option--focused': is_focused
 					}, element.props.className)
@@ -501,7 +488,7 @@ var Select = function (_PureComponent) {
 						value: value === null ? undefined : value,
 						disabled: disabled,
 						onChange: function onChange(event) {},
-						style: style ? (0, _extends3.default)({}, style, { width: 'auto' }) : { width: 'auto' },
+						style: style ? _extends({}, style, { width: 'auto' }) : { width: 'auto' },
 						className: className },
 					options ? options.map(function (item, i) {
 						return _react2.default.createElement(
@@ -1087,10 +1074,9 @@ var Select = function (_PureComponent) {
 		// }
 
 	}]);
-	return Select;
-}(_react.PureComponent);
 
-Select.propTypes = {
+	return Select;
+}(_react.PureComponent), _class.propTypes = {
 	// A list of selectable options
 	options: _react.PropTypes.arrayOf(_react.PropTypes.shape({
 		// Option value
@@ -1179,8 +1165,7 @@ Select.propTypes = {
 	// transition_item_count_min : PropTypes.number,
 	// transition_duration_min : PropTypes.number,
 	// transition_duration_max : PropTypes.number
-};
-Select.defaultProps = {
+}, _class.defaultProps = {
 	alignment: 'left',
 
 	scroll: true,
@@ -1196,7 +1181,7 @@ Select.defaultProps = {
 	// transition_item_count_min : 1,
 	// transition_duration_min : 60, // milliseconds
 	// transition_duration_max : 100 // milliseconds
-};
+}, _temp);
 exports.default = Select;
 
 

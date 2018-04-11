@@ -1,38 +1,18 @@
-'use strict';
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _taggedTemplateLiteral2 = require('babel-runtime/helpers/taggedTemplateLiteral');
+var _class, _temp;
 
-var _taggedTemplateLiteral3 = _interopRequireDefault(_taggedTemplateLiteral2);
+var _templateObject = _taggedTemplateLiteral(['\n\twrapper\n\t\tposition   : relative\n\t\tdisplay    : inline-block\n\t\t// text-align : inherit\n\n\t\t-webkit-user-select : none\n\t\t-moz-user-select    : none\n\t\t-ms-user-select     : none\n\t\tuser-select         : none\n\n\tarrow\n\t\tdisplay  : inline-block\n\n\tlist\n\t\tposition        : absolute\n\t\tz-index         : 1\n\t\tmargin-top      : 0\n\t\tmargin-bottom   : 0\n\t\tpadding         : 0\n\t\tlist-style-type : none\n\t\toverflow-x      : hidden\n\n\t\t&downward\n\t\t\t// when html page is overflown by a long list\n\t\t\t// this bottom margin takes effect\n\t\t\tmargin-bottom : 1em\n\n\t\t&upward\n\t\t\tbottom: 100%\n\n\t\t\t// when html page is overflown by a long list\n\t\t\t// this top margin takes effect\n\t\t\tmargin-top : 1em\n\n\tlist_item\n\t\tdisplay     : inline-block\n\t\twhite-space : nowrap\n\n\tmenu_toggler\n\t\tdisplay : inline-block\n\n\tseparator\n\t\tpadding     : 0\n\t\tline-height : 0\n\t\tfont-size   : 0\n'], ['\n\twrapper\n\t\tposition   : relative\n\t\tdisplay    : inline-block\n\t\t// text-align : inherit\n\n\t\t-webkit-user-select : none\n\t\t-moz-user-select    : none\n\t\t-ms-user-select     : none\n\t\tuser-select         : none\n\n\tarrow\n\t\tdisplay  : inline-block\n\n\tlist\n\t\tposition        : absolute\n\t\tz-index         : 1\n\t\tmargin-top      : 0\n\t\tmargin-bottom   : 0\n\t\tpadding         : 0\n\t\tlist-style-type : none\n\t\toverflow-x      : hidden\n\n\t\t&downward\n\t\t\t// when html page is overflown by a long list\n\t\t\t// this bottom margin takes effect\n\t\t\tmargin-bottom : 1em\n\n\t\t&upward\n\t\t\tbottom: 100%\n\n\t\t\t// when html page is overflown by a long list\n\t\t\t// this top margin takes effect\n\t\t\tmargin-top : 1em\n\n\tlist_item\n\t\tdisplay     : inline-block\n\t\twhite-space : nowrap\n\n\tmenu_toggler\n\t\tdisplay : inline-block\n\n\tseparator\n\t\tpadding     : 0\n\t\tline-height : 0\n\t\tfont-size   : 0\n']);
 
-var _extends2 = require('babel-runtime/helpers/extends');
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-var _extends3 = _interopRequireDefault(_extends2);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _templateObject = (0, _taggedTemplateLiteral3.default)(['\n\twrapper\n\t\tposition   : relative\n\t\tdisplay    : inline-block\n\t\t// text-align : inherit\n\n\t\t-webkit-user-select : none\n\t\t-moz-user-select    : none\n\t\t-ms-user-select     : none\n\t\tuser-select         : none\n\n\tarrow\n\t\tdisplay  : inline-block\n\n\tlist\n\t\tposition        : absolute\n\t\tz-index         : 1\n\t\tmargin-top      : 0\n\t\tmargin-bottom   : 0\n\t\tpadding         : 0\n\t\tlist-style-type : none\n\t\toverflow-x      : hidden\n\n\t\t&downward\n\t\t\t// when html page is overflown by a long list\n\t\t\t// this bottom margin takes effect\n\t\t\tmargin-bottom : 1em\n\n\t\t&upward\n\t\t\tbottom: 100%\n\n\t\t\t// when html page is overflown by a long list\n\t\t\t// this top margin takes effect\n\t\t\tmargin-top : 1em\n\n\tlist_item\n\t\tdisplay     : inline-block\n\t\twhite-space : nowrap\n\n\tmenu_toggler\n\t\tdisplay : inline-block\n\n\tseparator\n\t\tpadding     : 0\n\t\tline-height : 0\n\t\tfont-size   : 0\n'], ['\n\twrapper\n\t\tposition   : relative\n\t\tdisplay    : inline-block\n\t\t// text-align : inherit\n\n\t\t-webkit-user-select : none\n\t\t-moz-user-select    : none\n\t\t-ms-user-select     : none\n\t\tuser-select         : none\n\n\tarrow\n\t\tdisplay  : inline-block\n\n\tlist\n\t\tposition        : absolute\n\t\tz-index         : 1\n\t\tmargin-top      : 0\n\t\tmargin-bottom   : 0\n\t\tpadding         : 0\n\t\tlist-style-type : none\n\t\toverflow-x      : hidden\n\n\t\t&downward\n\t\t\t// when html page is overflown by a long list\n\t\t\t// this bottom margin takes effect\n\t\t\tmargin-bottom : 1em\n\n\t\t&upward\n\t\t\tbottom: 100%\n\n\t\t\t// when html page is overflown by a long list\n\t\t\t// this top margin takes effect\n\t\t\tmargin-top : 1em\n\n\tlist_item\n\t\tdisplay     : inline-block\n\t\twhite-space : nowrap\n\n\tmenu_toggler\n\t\tdisplay : inline-block\n\n\tseparator\n\t\tpadding     : 0\n\t\tline-height : 0\n\t\tfont-size   : 0\n']);
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 // WHEN THIS SELECT COMPONENT IS GONNA BE RE-COPY-PASTED FROM REACT-RESPONSIVE-UI
 // THIS COULD BE POTENTIALLY A BREAKING CHANGE DUE TO STYLES BEING MOVED FROM INLINE TO CSS.
@@ -45,23 +25,12 @@ var _templateObject = (0, _taggedTemplateLiteral3.default)(['\n\twrapper\n\t\tpo
 
 // https://github.com/halt-hammerzeit/react-responsive-ui/blob/master/source/select.js
 
-var _react = require('react');
+import React, { PureComponent, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
+import { flat as styler } from 'react-styling';
+import classNames from 'classnames';
 
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _reactStyling = require('react-styling');
-
-var _classnames = require('classnames');
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _dom = require('./misc/dom');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+import { is_reachable, submit_parent_form, get_scrollbar_width } from './misc/dom';
 
 // Possible enhancements:
 //
@@ -77,15 +46,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // (And also to stretch the selected option with no `label`)
 var Zero_width_space = '\u200B';
 
-var Select = function (_PureComponent) {
-	(0, _inherits3.default)(Select, _PureComponent);
+var Select = (_temp = _class = function (_PureComponent) {
+	_inherits(Select, _PureComponent);
 
 	function Select(props) {
-		(0, _classCallCheck3.default)(this, Select);
+		_classCallCheck(this, Select);
 
 		// Shouldn't memory leak because
 		// the set of options is assumed to be constant.
-		var _this = (0, _possibleConstructorReturn3.default)(this, (Select.__proto__ || (0, _getPrototypeOf2.default)(Select)).call(this, props));
+		var _this = _possibleConstructorReturn(this, (Select.__proto__ || Object.getPrototypeOf(Select)).call(this, props));
 
 		_this.state = {};
 		_this.options = {};
@@ -114,7 +83,7 @@ var Select = function (_PureComponent) {
 		}
 
 		if (children && !menu) {
-			_react2.default.Children.forEach(children, function (element) {
+			React.Children.forEach(children, function (element) {
 				if (!element.props.value) {
 					throw new Error('You must specify "value" prop on each child of <Select/>');
 				}
@@ -138,7 +107,7 @@ var Select = function (_PureComponent) {
 	// Client side rendering, javascript is enabled
 
 
-	(0, _createClass3.default)(Select, [{
+	_createClass(Select, [{
 		key: 'componentDidMount',
 		value: function componentDidMount() {
 			document.addEventListener('click', this.document_clicked);
@@ -198,7 +167,7 @@ var Select = function (_PureComponent) {
 			var list_style = upward ? styles.list_upward : styles.list_downward;
 
 			// Will be altered
-			list_style = (0, _extends3.default)({}, list_style);
+			list_style = _extends({}, list_style);
 
 			switch (alignment) {
 				case 'left':
@@ -235,22 +204,22 @@ var Select = function (_PureComponent) {
 			// Else, if a list of options is supplied as a set of child React elements,
 			// then render those elements.
 			else {
-					list_items = _react2.default.Children.map(children, function (element, index) {
+					list_items = React.Children.map(children, function (element, index) {
 						return _this2.render_list_item({ index: index, element: element });
 					});
 				}
 
-			var wrapper_style = (0, _extends3.default)({}, styles.wrapper, { textAlign: alignment });
+			var wrapper_style = _extends({}, styles.wrapper, { textAlign: alignment });
 
-			var markup = _react2.default.createElement(
+			var markup = React.createElement(
 				'div',
 				{
 					ref: function ref(_ref4) {
 						return _this2.select = _ref4;
 					},
 					onKeyDown: this.on_key_down_in_container,
-					style: style ? (0, _extends3.default)({}, wrapper_style, style) : wrapper_style,
-					className: (0, _classnames2.default)(className, 'rrui__select', {
+					style: style ? _extends({}, wrapper_style, style) : wrapper_style,
+					className: classNames(className, 'rrui__select', {
 						'rrui__rich': fallback,
 						'rrui__select--upward': upward,
 						'rrui__select--expanded': expanded,
@@ -258,23 +227,23 @@ var Select = function (_PureComponent) {
 						'rrui__select--disabled': disabled
 					}) },
 				!menu && this.render_selected_item(),
-				menu && _react2.default.createElement(
+				menu && React.createElement(
 					'div',
 					{
 						ref: function ref(_ref2) {
 							return _this2.menu_toggler;
 						},
 						style: styles.menu_toggler },
-					_react2.default.cloneElement(toggler, { onClick: this.toggle })
+					React.cloneElement(toggler, { onClick: this.toggle })
 				),
-				_react2.default.createElement(
+				React.createElement(
 					'ul',
 					{
 						ref: function ref(_ref3) {
 							return _this2.list = _ref3;
 						},
 						style: list_style,
-						className: (0, _classnames2.default)('rrui__select__options', {
+						className: classNames('rrui__select__options', {
 							'rrui__select__options--expanded': expanded,
 							'rrui__select__options--simple-left-aligned': !children && alignment === 'left',
 							'rrui__select__options--simple-right-aligned': !children && alignment === 'right'
@@ -323,9 +292,9 @@ var Select = function (_PureComponent) {
 			//
 			// a hack to restore padding-right taken up by a vertical scrollbar
 			if (overflow && scrollbarPadding) {
-				item_style = (0, _extends3.default)({}, styles.list.item);
+				item_style = _extends({}, styles.list.item);
 
-				item_style.marginRight = (0, _dom.get_scrollbar_width)() + 'px';
+				item_style.marginRight = get_scrollbar_width() + 'px';
 			}
 
 			var button = void 0;
@@ -334,8 +303,8 @@ var Select = function (_PureComponent) {
 			// then enhance those elements with extra props.
 			if (element) {
 				var extra_props = {
-					style: (0, _extends3.default)({}, item_style, element.props.style),
-					className: (0, _classnames2.default)('rrui__select__option', {
+					style: _extends({}, item_style, element.props.style),
+					className: classNames('rrui__select__option', {
 						'rrui__select__option--focused': is_focused
 					}, element.props.className)
 				};
@@ -354,12 +323,12 @@ var Select = function (_PureComponent) {
 					}
 				};
 
-				button = _react2.default.cloneElement(element, extra_props);
+				button = React.cloneElement(element, extra_props);
 			}
 			// Else, if a list of options is supplied as an array of `{ value, label }`,
 			// then transform those options to <buttons/>
 			else {
-					button = _react2.default.createElement(
+					button = React.createElement(
 						'button',
 						{
 							type: 'button',
@@ -368,11 +337,11 @@ var Select = function (_PureComponent) {
 							},
 							disabled: disabled,
 							tabIndex: '-1',
-							className: (0, _classnames2.default)('rrui__select__option', 'rrui__button__button', {
+							className: classNames('rrui__select__option', 'rrui__button__button', {
 								'rrui__select__option--focused': is_focused
 							}),
 							style: item_style },
-						icon && _react2.default.cloneElement(icon, { className: (0, _classnames2.default)(icon.props.className, 'rrui__select__option-icon') }),
+						icon && React.cloneElement(icon, { className: classNames(icon.props.className, 'rrui__select__option-icon') }),
 						label
 					);
 				}
@@ -386,14 +355,14 @@ var Select = function (_PureComponent) {
 			// Using just `index` for `ref`s is safe
 			// because when `key` changes then the `ref` is updated
 			// so there won't be inconsistencies.
-			var markup = _react2.default.createElement(
+			var markup = React.createElement(
 				'li',
 				{
 					key: key,
 					ref: function ref(_ref6) {
 						return _this3.options[index] = _ref6;
 					},
-					className: (0, _classnames2.default)({
+					className: classNames({
 						'rrui__select__separator-option': element && element.type === Select.Separator
 					}),
 					style: list_item_style },
@@ -422,7 +391,7 @@ var Select = function (_PureComponent) {
 			var selected_label = this.get_selected_option_label();
 
 			if (autocomplete && expanded) {
-				var _markup = _react2.default.createElement('input', {
+				var _markup = React.createElement('input', {
 					type: 'text',
 					ref: function ref(_ref7) {
 						return _this4.autocomplete = _ref7;
@@ -431,7 +400,7 @@ var Select = function (_PureComponent) {
 					value: autocomplete_input_value,
 					onChange: this.on_autocomplete_input_change,
 					onKeyDown: this.on_key_down,
-					className: (0, _classnames2.default)('rrui__select__selected', 'rrui__select__selected--autocomplete', {
+					className: classNames('rrui__select__selected', 'rrui__select__selected--autocomplete', {
 						'rrui__select__selected--nothing': !selected_label
 					}) });
 
@@ -440,7 +409,7 @@ var Select = function (_PureComponent) {
 
 			var selected = this.get_selected_option();
 
-			var markup = _react2.default.createElement(
+			var markup = React.createElement(
 				'button',
 				{
 					ref: function ref(_ref8) {
@@ -450,13 +419,13 @@ var Select = function (_PureComponent) {
 					disabled: disabled,
 					onClick: this.toggle,
 					onKeyDown: this.on_key_down,
-					className: (0, _classnames2.default)('rrui__select__selected', 'rrui__button__button', {
+					className: classNames('rrui__select__selected', 'rrui__button__button', {
 						'rrui__select__selected--nothing': !selected_label
 					}) },
 				Zero_width_space,
-				concise && selected && selected.icon ? _react2.default.cloneElement(selected.icon, { title: selected_label }) : selected_label || label,
-				_react2.default.createElement('div', {
-					className: (0, _classnames2.default)('rrui__select__arrow', {
+				concise && selected && selected.icon ? React.cloneElement(selected.icon, { title: selected_label }) : selected_label || label,
+				React.createElement('div', {
+					className: classNames('rrui__select__arrow', {
 						'rrui__select__arrow--expanded': expanded
 					}),
 					style: styles.arrow })
@@ -484,27 +453,27 @@ var Select = function (_PureComponent) {
 
 
 			if (menu) {
-				return _react2.default.createElement(
+				return React.createElement(
 					'div',
 					{ className: 'rrui__rich__fallback' },
 					toggler
 				);
 			}
 
-			var markup = _react2.default.createElement(
+			var markup = React.createElement(
 				'div',
 				{ className: 'rrui__rich__fallback' },
-				_react2.default.createElement(
+				React.createElement(
 					'select',
 					{
 						name: name,
 						value: value === null ? undefined : value,
 						disabled: disabled,
 						onChange: function onChange(event) {},
-						style: style ? (0, _extends3.default)({}, style, { width: 'auto' }) : { width: 'auto' },
+						style: style ? _extends({}, style, { width: 'auto' }) : { width: 'auto' },
 						className: className },
 					options ? options.map(function (item, i) {
-						return _react2.default.createElement(
+						return React.createElement(
 							'option',
 							{
 								className: 'rrui__select__option',
@@ -512,8 +481,8 @@ var Select = function (_PureComponent) {
 								value: item.value },
 							item.label
 						);
-					}) : _react2.default.Children.map(children, function (child) {
-						return _react2.default.createElement(
+					}) : React.Children.map(children, function (child) {
+						return React.createElement(
 							'option',
 							{
 								className: 'rrui__select__option',
@@ -551,7 +520,7 @@ var Select = function (_PureComponent) {
 
 			var option = void 0;
 
-			_react2.default.Children.forEach(children, function (child) {
+			React.Children.forEach(children, function (child) {
 				if (child.props.value === value) {
 					option = child;
 				}
@@ -573,7 +542,7 @@ var Select = function (_PureComponent) {
 
 			var option_index = void 0;
 
-			_react2.default.Children.forEach(children, function (child, index) {
+			React.Children.forEach(children, function (child, index) {
 				if (child.props.value === option.value) {
 					option_index = index;
 				}
@@ -738,14 +707,14 @@ var Select = function (_PureComponent) {
 	}, {
 		key: 'document_clicked',
 		value: function document_clicked(event) {
-			var autocomplete = _reactDom2.default.findDOMNode(this.autocomplete);
-			var selected_option = _reactDom2.default.findDOMNode(this.selected);
-			var options_list = _reactDom2.default.findDOMNode(this.list);
+			var autocomplete = ReactDOM.findDOMNode(this.autocomplete);
+			var selected_option = ReactDOM.findDOMNode(this.selected);
+			var options_list = ReactDOM.findDOMNode(this.list);
 
 			// Don't close the select if its expander button has been clicked,
 			// or if autocomplete has been clicked,
 			// or if an option was selected from the list.
-			if ((0, _dom.is_reachable)(event.target, options_list) || autocomplete && (0, _dom.is_reachable)(event.target, autocomplete) || selected_option && (0, _dom.is_reachable)(event.target, selected_option)) {
+			if (is_reachable(event.target, options_list) || autocomplete && is_reachable(event.target, autocomplete) || selected_option && is_reachable(event.target, selected_option)) {
 				return;
 			}
 
@@ -884,7 +853,7 @@ var Select = function (_PureComponent) {
 						// therefore hitting Enter while being focused on it just pushes that button.
 						// So submit the enclosing form manually.
 						else {
-								if ((0, _dom.submit_parent_form)(_reactDom2.default.findDOMNode(this.select))) {
+								if (submit_parent_form(ReactDOM.findDOMNode(this.select))) {
 									event.preventDefault();
 								}
 							}
@@ -976,8 +945,8 @@ var Select = function (_PureComponent) {
 		key: 'scroll_to',
 		value: function scroll_to(option) {
 			var index = this.get_option_index(option);
-			var option_element = _reactDom2.default.findDOMNode(this.options[index]);
-			_reactDom2.default.findDOMNode(this.list).scrollTop = option_element.offsetTop;
+			var option_element = ReactDOM.findDOMNode(this.options[index]);
+			ReactDOM.findDOMNode(this.list).scrollTop = option_element.offsetTop;
 		}
 
 		// Fully shows an option (scrolls to it if neccessary)
@@ -986,8 +955,8 @@ var Select = function (_PureComponent) {
 		key: 'show_option',
 		value: function show_option(option, gravity) {
 			var index = this.get_option_index(option);
-			var option_element = _reactDom2.default.findDOMNode(this.options[index]);
-			var list = _reactDom2.default.findDOMNode(this.list);
+			var option_element = ReactDOM.findDOMNode(this.options[index]);
+			var list = ReactDOM.findDOMNode(this.list);
 
 			switch (gravity) {
 				case 'top':
@@ -1009,7 +978,7 @@ var Select = function (_PureComponent) {
 	}, {
 		key: 'calculate_height',
 		value: function calculate_height() {
-			var list_dom_node = _reactDom2.default.findDOMNode(this.list);
+			var list_dom_node = ReactDOM.findDOMNode(this.list);
 			var border = parseInt(window.getComputedStyle(list_dom_node).borderTopWidth);
 			var height = list_dom_node.scrollHeight; // + 2 * border // inner height + 2 * border
 
@@ -1087,100 +1056,98 @@ var Select = function (_PureComponent) {
 		// }
 
 	}]);
-	return Select;
-}(_react.PureComponent);
 
-Select.propTypes = {
+	return Select;
+}(PureComponent), _class.propTypes = {
 	// A list of selectable options
-	options: _react.PropTypes.arrayOf(_react.PropTypes.shape({
+	options: PropTypes.arrayOf(PropTypes.shape({
 		// Option value
-		value: _react2.default.PropTypes.string,
+		value: React.PropTypes.string,
 		// Option label
-		label: _react2.default.PropTypes.string,
+		label: React.PropTypes.string,
 		// Option icon
-		icon: _react2.default.PropTypes.node
+		icon: React.PropTypes.node
 	})),
 
 	// HTML form input `name` attribute
-	name: _react.PropTypes.string,
+	name: PropTypes.string,
 
 	// Default label (like "Choose")
-	label: _react.PropTypes.string,
+	label: PropTypes.string,
 
 	// Show icon only for selected item,
 	// and only if `concise` is `true`.
-	saveOnIcons: _react.PropTypes.bool,
+	saveOnIcons: PropTypes.bool,
 
 	// Disables this control
-	disabled: _react.PropTypes.bool,
+	disabled: PropTypes.bool,
 
 	// Selected option value
-	value: _react.PropTypes.any,
+	value: PropTypes.any,
 
 	// Is called when an option is selected
-	onChange: _react.PropTypes.func,
+	onChange: PropTypes.func,
 
 	// (exotic use case)
 	// Falls back to a plain HTML input
 	// when javascript is disabled (e.g. Tor)
-	fallback: _react.PropTypes.bool.isRequired,
+	fallback: PropTypes.bool.isRequired,
 
 	// CSS class
-	className: _react.PropTypes.string,
+	className: PropTypes.string,
 
 	// CSS style object
-	style: _react.PropTypes.object,
+	style: PropTypes.object,
 
 	// If this flag is set to `true`,
 	// and `icon` is specified for a selected option,
 	// then the selected option will be displayed
 	// as icon only, without the label.
-	concise: _react.PropTypes.bool,
+	concise: PropTypes.bool,
 
 	// If set to `true`, autocompletion is available
 	// upon expanding the options list.
-	autocomplete: _react.PropTypes.bool,
+	autocomplete: PropTypes.bool,
 
 	// Options list alignment ("left", "right")
-	alignment: _react.PropTypes.oneOf(['left', 'right']),
+	alignment: PropTypes.oneOf(['left', 'right']),
 
 	// If `menu` flag is set to `true`
 	// then it's gonna be a dropdown menu
 	// with `children` elements inside.
-	menu: _react.PropTypes.bool,
+	menu: PropTypes.bool,
 
 	// If `menu` flag is set to `true`
 	// then `toggler` is the dropdown menu button.
-	toggler: _react.PropTypes.element,
+	toggler: PropTypes.element,
 
 	// If `scroll` is `false`, then options list
 	// is not limited in height.
 	// Is `true` by default (scrollable).
-	scroll: _react.PropTypes.bool.isRequired,
+	scroll: PropTypes.bool.isRequired,
 
 	// If this flag is set to `true`,
 	// then the dropdown expands itself upward.
 	// (as opposed to the default downward)
-	upward: _react.PropTypes.bool,
+	upward: PropTypes.bool,
 
 	// Maximum items fitting the options list height (scrollable).
 	// Is `6` by default.
-	maxItems: _react.PropTypes.number.isRequired,
+	maxItems: PropTypes.number.isRequired,
 
 	// Is `true` by default (only when the list of options is scrollable)
-	scrollbarPadding: _react.PropTypes.bool,
+	scrollbarPadding: PropTypes.bool,
 
-	focusUponSelection: _react.PropTypes.bool.isRequired,
+	focusUponSelection: PropTypes.bool.isRequired,
 
-	onTabOut: _react.PropTypes.func,
+	onTabOut: PropTypes.func,
 
-	onToggle: _react.PropTypes.func
+	onToggle: PropTypes.func
 
 	// transition_item_count_min : PropTypes.number,
 	// transition_duration_min : PropTypes.number,
 	// transition_duration_max : PropTypes.number
-};
-Select.defaultProps = {
+}, _class.defaultProps = {
 	alignment: 'left',
 
 	scroll: true,
@@ -1196,13 +1163,13 @@ Select.defaultProps = {
 	// transition_item_count_min : 1,
 	// transition_duration_min : 60, // milliseconds
 	// transition_duration_max : 100 // milliseconds
-};
-exports.default = Select;
+}, _temp);
+export { Select as default };
 
 
 Select.Separator = function (props) {
-	return _react2.default.createElement('div', { className: 'rrui__select__separator', style: styles.separator });
+	return React.createElement('div', { className: 'rrui__select__separator', style: styles.separator });
 };
 
-var styles = (0, _reactStyling.flat)(_templateObject);
+var styles = styler(_templateObject);
 //# sourceMappingURL=select.js.map

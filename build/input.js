@@ -86,10 +86,9 @@ var all_countries = [];
 // just to reduce the overall bundle size.
 var default_dictionary = {
 	International: 'International'
-};
 
-// Populate `all_countries` and `default_dictionary`
-var _iteratorNormalCompletion = true;
+	// Populate `all_countries` and `default_dictionary`
+};var _iteratorNormalCompletion = true;
 var _didIteratorError = false;
 var _iteratorError = undefined;
 
