@@ -1,4 +1,4 @@
-import country_names from '../source/international/country names.json'
+import country_names from '../source/international/countries'
 
 import path from 'path'
 import fs from 'fs'
@@ -55,10 +55,10 @@ function get_country_flag(code)
 
 	switch (code)
 	{
-		// Kosovo
-		case 'xk':
-			flag_path = 'flags'
-			break
+		// // Kosovo (disputed territory).
+		// case 'xk':
+		// 	flag_path = 'flags'
+		// 	break
 
 		// `flag-icon-css`
 		default:

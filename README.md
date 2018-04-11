@@ -1,22 +1,35 @@
 # react-phone-number-input
 
-[![NPM Version][npm-badge]][npm]
-[![Build Status][travis-badge]][travis]
-<!-- [![Test Coverage][coveralls-badge]][coveralls] -->
+[![npm version](https://img.shields.io/npm/v/react-phone-number-input.svg?style=flat-square)](https://www.npmjs.com/package/react-phone-number-input)
+[![npm downloads](https://img.shields.io/npm/dm/react-phone-number-input.svg?style=flat-square)](https://www.npmjs.com/package/react-phone-number-input)
 
-International phone number `<input/>` (and output) (in React) (iPhone style)
+International phone number `<input/>` for React (iPhone style).
 
-[See Demo](http://halt-hammerzeit.github.io/react-phone-number-input/)
+[See Demo](http://catamphetamine.github.io/react-phone-number-input/)
 
-[![Screenshot #1](https://raw.githubusercontent.com/halt-hammerzeit/react-phone-number-input/master/docs/images/Screen Shot 2016-12-24 at 12.37.51.png)](https://www.youtube.com/watch?v=6e1pMrYH5jI)
+## Screenshots
 
-[![Screenshot #2](https://raw.githubusercontent.com/halt-hammerzeit/react-phone-number-input/master/docs/images/Screen Shot 2016-12-24 at 12.35.26.png)](https://www.youtube.com/watch?v=vsE5nHBxt2w)
+<img src="https://raw.githubusercontent.com/catamphetamine/react-phone-number-input/master/docs/images/first-glance.png" width="279" height="156"/>
 
-## Installation
+## Built-in country `<select/>` (with autocomplete)
 
-```
-npm install react-phone-number-input --save
-```
+### Desktop
+
+<img src="https://raw.githubusercontent.com/catamphetamine/react-phone-number-input/master/docs/images/desktop-countries.png" width="510" height="298"/>
+
+### Mobile
+
+<img src="https://raw.githubusercontent.com/catamphetamine/react-phone-number-input/master/docs/images/iphone-countries.png" width="380" height="676"/>
+
+## Native `<select/>`
+
+### Desktop
+
+<img src="https://raw.githubusercontent.com/catamphetamine/react-phone-number-input/master/docs/images/desktop-native-select.png" width="475" height="223"/>
+
+### Mobile
+
+<img src="https://raw.githubusercontent.com/catamphetamine/react-phone-number-input/master/docs/images/iphone-native-select.png" width="380" height="676"/>
 
 ## Usage
 
@@ -31,29 +44,55 @@ return (
 )
 ```
 
-The international phone number input utilizes [`libphonenumber-js`](https://github.com/halt-hammerzeit/libphonenumber-js) international phone number parsing and formatting library (used in Google Android phones). The size of the library is about 70 KiloBytes, so it's suitable for public internet usage (for example, the size of `react` package is about 50 KiloBytes).
+The international phone number input utilizes [`libphonenumber-js`](https://github.com/catamphetamine/libphonenumber-js) international phone number parsing and formatting library.
 
-The countries dropdown with autocomplete is taken from [`react-responsive-ui`](https://halt-hammerzeit.github.io/react-responsive-ui/) library.
+The phone number `<input/>` itself is implemented using [`input-format`](https://catamphetamine.github.io/input-format/) (which has a bit of an [issue](https://github.com/catamphetamine/react-phone-number-input#android) with Samsung Android phones though).
 
-I could easily include all country flags in a form of `<svg/>` React elements as part of this library but the overall size of the bundle would then be about 3 MegaBytes (yeah, those SVGs turned out to be really huge) which is too much for a public internet website. Therefore the default behaviour is a compromise: instead of pleloading the flags for all countries in the list only the flag for the currently selected country is shown. This way the user only downloads a single SVG image, and is not forced to download the whole international flag bundle.
+The countries dropdown with autocomplete is taken from [`react-responsive-ui`](https://catamphetamine.github.io/react-responsive-ui/).
+
+I could also easily include all country flags in a form of `<svg/>` React elements as part of this library but the overall size of the bundle would then be about 3 MegaBytes (yeah, those SVGs turned out to be really huge) which is too much for a website. Therefore the default behaviour is a compromise: instead of pleloading the flags for all countries in the expanded list of countries only the flag for the currently selected country is shown. This way the user only downloads a single SVG image and is not forced to download the whole international flags bundle.
 
 ## CSS
 
-This component is styled using CSS. Copy [`styles/style.css`](https://github.com/halt-hammerzeit/react-phone-number-input/blob/master/styles/style.css) to your project folder and include it on a page:
+The CSS files for this React component must be included on a page too.
+
+#### When using Webpack
+
+```js
+import 'react-phone-number-input/rrui.css'
+import 'react-phone-number-input/style.css'
+```
+
+And set up a [`postcss-loader`](https://github.com/postcss/postcss-loader) with a [CSS autoprefixer](https://github.com/postcss/autoprefixer) for supporting old web browsers (e.g. `last 2 versions`, `iOS >= 7`, `Android >= 4`).
+
+#### When not using Webpack
+
+Get the `rrui.css` and `style.css` files from this package, process these files with a [CSS autoprefixer](https://github.com/postcss/autoprefixer) for supporting old web browsers (e.g. `last 2 versions`, `iOS >= 7`, `Android >= 4`), and then include them on a page.
 
 ```html
 <head>
-  <link rel="stylesheet" href="/css/react-phone-number-input.css"/>
+  <link rel="stylesheet" href="/css/react-phone-number-input/rrui.css"/>
+  <link rel="stylesheet" href="/css/react-phone-number-input/style.css"/>
 </head>
 ```
 
-This CSS file is meant as a base one and a developer should override the CSS rules defined in it (this can be done in a separate file) to better suit the project's needs.
+## Android
 
-An alternative way of including the base CSS file when using Webpack would be:
+There have been some [reports](https://github.com/catamphetamine/react-phone-number-input/issues/59) of non-stock Android keyboards not handling caret positioning properly (e.g. Samsung Galaxy S8). I don't have such an Android phone at my disposal to debug that issue. You can send me one though (perhaps even donate one).
 
-```js
-require('react-phone-number-input/styles/style.css')
-```
+## Validation
+
+This component is based on [`libphonenumber-js`](https://github.com/catamphetamine/libphonenumber-js) which is a rewrite of Google's [`libphonenumber`](https://github.com/googlei18n/libphonenumber) library which [doesn't enforce](http://libphonenumber.appspot.com/phonenumberparser?number=2134445566777&country=US) any validation rules when entering phone numbers in "as you type" mode (e.g. when phone number is too long or too short).
+
+For the actual phone number validation use [`libphonenumber-js`](https://github.com/catamphetamine/libphonenumber-js): either a loose validation via [`parseNumber(value)`](https://github.com/catamphetamine/libphonenumber-js#parsetext-defaultcountry-options) or a strict validation via [`isValidNumber(value)`](https://github.com/catamphetamine/libphonenumber-js#isvalidnumbernumber-defaultcountry).
+
+## Autocomplete
+
+Make sure to wrap a `<Phone/>` into a `<form/>` otherwise autocomplete feature won't work: a user will be selecting his phone number from the list but [nothing will be happening](https://github.com/catamphetamine/react-phone-number-input/issues/101).
+
+## Bug reporting
+
+If you think that the phone number parsing/formatting/validation engine malfunctions for a particular phone number then follow the [bug reporting instructions in `libphonenumber-js` repo](https://github.com/catamphetamine/libphonenumber-js#bug-reporting).
 
 ## API
 
@@ -61,53 +100,106 @@ require('react-phone-number-input/styles/style.css')
 
 The available props are
 
- * `value` — the phone number holding variable, will contain the phone number in international plaintext format (e.g. `+12223333333` for USA)
+ * `value` — Phone number in [E.164](https://en.wikipedia.org/wiki/E.164) format. E.g. `+12223333333` for USA.
 
- * `onChange` — the function writing the phone number to the `value` variable
+ * `onChange` — Updates the `value`.
 
- * `country` — (optional) the default country; if this property changes and the user hasn't entered a phone number yet then this new `country` is selected
+ * `country` — (optional) The country which is selected by default (can be set after a GeoIP lookup). E.g. `US`.
 
- * `countries` — (optional) only these countries will be allowed (e.g. `['RU', 'KZ', 'UA']`)
+ * `countries` — (optional) Only the specified countries will be selectable. E.g. `['RU', 'KZ', 'UA']`.
 
- * `flagsPath` — (optional) A base URL path for national flag SVG icons. By default it loads flag icons from [`flag-icon-css` github repo](https://github.com/lipis/flag-icon-css). You might want to download those SVG flag icons and host them yourself.
+ * `flagsPath` — (optional) A base URL path for national flag SVG icons. By default it loads flag icons from [`flag-icon-css` github repo](https://github.com/lipis/flag-icon-css). I imagine someone might want to download those SVG flag icons and host them on their own servers instead.
 
- * `flags` — (optional) Custom national flag icon React elements (a map of country codes, or just `false` for no flags at all)
+ * `flags` — (optional) Supplies `<svg/>` elements for flags instead of the default `<img src="..."/>` ones. This might be suitable if someone's making an application which is supposed to be able to work offline (a downloadable app, or an "internal" website): `import flags from 'react-phone-number-input/flags'`.
 
-For the full list of all possible `props` see the [source code](https://github.com/halt-hammerzeit/react-phone-number-input/blob/master/source/input.js).
+ * `flagComponent` — (optional) A React component for displaying a country flag (replaces the default flag icons).
 
-### isValidPhoneNumber
+ * `nativeExpanded` — If set to `true` will render native `<select/>` when country select is expanded instead of the custom one (which has autocomplete feature).
 
-[`libphonenumber.isValidNumber`](https://github.com/halt-hammerzeit/libphonenumber-js#isvalidnumbernumber-country_code)
+ * `displayInitialValueAsLocalNumber` — If set to `true` will display `value` phone number in local format when the component mounts or when `value` property is set (see the example on the demo page). The default behaviour is `false` meaning that if initial `value` is set then it will be displayed in international format. The reason for such default behaviour is that the newer generation grows up when there are no stationary phones and therefore everyone inputs phone numbers as international ones in their smartphones so people gradually get more accustomed to writing phone numbers in international form rather than in local form.
 
-(is exported just for convenience, if anyone needs that for whatever purpose)
+ * `error` — a `String` error message that should be shown.
 
-### formatPhoneNumber
+ * `indicateInvalid` — `error` won't be shown unless `indicateInvalid` is `true`. The reason for this additional boolean flag is to enable some advanced ("smart") form field error indication scenarios.
 
-[`libphonenumber.format`](https://github.com/halt-hammerzeit/libphonenumber-js#formatparsed_number-format)
+For the full list of all possible `props` see the [source code](https://github.com/catamphetamine/react-phone-number-input/blob/master/source/Input.js). All other properties are passed through to the `<input/>` component.
 
-(is exported just for convenience, if anyone needs that for whatever purpose)
+## Localization
 
-### parsePhoneNumber
+Country names can be passed via the `labels` property. E.g. `labels={{ RU: 'Россия', US: 'США', ... }}`. This component comes pre-packaged with a couple of ready-made [translations](https://github.com/catamphetamine/react-phone-number-input/tree/master/locale). Submit pull requests for adding new translations.
 
-[`libphonenumber.parse`](https://github.com/halt-hammerzeit/libphonenumber-js#parsetext-options)
+```js
+import ru from 'react-phone-number-input/locale/ru'
 
-(is exported just for convenience, if anyone needs that for whatever purpose)
+<Phone ... labels={ru}/>
+```
 
-## Webpack
+## Extensions
 
-If you're using Webpack 1 then make sure that
+Some users asked for phone extension input feature. It can be activated by passing `ext` property (React.Element). The `ext` property is most likely gonna be a `redux-form` `<Field/>` (or `simpler-redux-form` `<Field/>`).
 
- * You have `json-loader` set up for `*.json` files in Webpack configuration
- * `json-loader` doesn't `exclude` `/node_modules/`
- * If you override `resolve.extensions` in Webpack configuration then make sure `.json` extension is present in the list
+```js
+import React, { Component } from 'react'
+import { Field, reduxForm } from 'redux-form'
+import Phone from 'react-phone-number-input'
 
-Webpack 2 sets up `json-loader` by default so there's no need for any special configuration.
+@reduxForm({
+	form: 'contact'
+})
+class Form extends Component {
+	render() {
+		const { handleSubmit } = this.props
+
+		const ext = (
+			<Field
+				name="ext"
+				component="input"
+				type="number"
+				noValidate
+				className={ className } />
+		)
+
+		return (
+			<form onSubmit={ handleSubmit }>
+				<Field
+					name="phone"
+					component={ Phone }
+					ext={ ext } />
+
+				<button type="submit">
+					Submit
+				</button>
+			</form>
+		);
+	}
+}
+```
+
+The code above hasn't been tested, but it most likely works. Phone extension input will appear to the right of the phone number input. One can always skip using `ext` property and add a completely separate form field for phone number extension input instead.
+
+`{ number, ext }` object can be converted to [RFC3966](https://www.ietf.org/rfc/rfc3966.txt) string for storing it in a database.
+
+```js
+import { formatRFC3966 } from 'libphonenumber-js'
+
+formatRFC3966({ number: '+12133734253', ext: '123' })
+// 'tel:+12133734253;ext=123'
+```
+
+Use the accompanying `parseRFC3966()` function to convert an RFC3966 string into an object having shape `{ number, ext }`.
+
+```js
+import { parseRFC3966 } from 'libphonenumber-js'
+
+parseRFC3966('tel:+12133734253;ext=123')
+// { number: '+12133734253', ext: '123' }
+```
 
 ## Reducing bundle size
 
-By default all countries are included which means that [`libphonenumber-js`](https://github.com/halt-hammerzeit/libphonenumber-js) loads the complete metadata set having the size of 75 KiloBytes. This really isn't much but for those who still want to reduce that to a lesser size there is a special exported `<Input/>` creator which takes custom `metadata` as an argument.
+By default all countries are included which means that [`libphonenumber-js`](https://github.com/catamphetamine/libphonenumber-js) loads the default metadata having the size of 75 kilobytes. This really isn't much but for those who still want to reduce that to a lesser size there is a special exported `<Input/>` creator which takes custom `metadata` as an argument.
 
-For a "tree-shaking" ES6-capable bundler (e.g. Webpack 2) that would be
+For a proper "tree-shaking" bundler that would be
 
 ```js
 import { Input } from 'react-phone-number-input'
@@ -118,7 +210,7 @@ export default function Phone(props) {
 }
 ```
 
-And for [Common.js](https://auth0.com/blog/javascript-module-systems-showdown/) environment that would be
+And for [Common.js](https://auth0.com/blog/javascript-module-systems-showdown/) environments (or bundlers that can't do proper "tree-shaking") that would be
 
 ```js
 var Input = require('react-phone-number-input/custom')
@@ -129,50 +221,22 @@ module.exports = function Phone(props) {
 }
 ```
 
-For generating custom metadata see [the guide in `libphonenumber-js` repo](https://github.com/halt-hammerzeit/libphonenumber-js#customizing-metadata).
+For generating custom metadata see [the guide in `libphonenumber-js` repo](https://github.com/catamphetamine/libphonenumber-js#customizing-metadata).
 
-## Contributing
+## Module not found: Error: Can't resolve 'libphonenumber-js/metadata.min'
 
-After cloning this repo, ensure dependencies are installed by running:
+This error means that your Webpack is misconfigured to exclude `.json` file extension from [the list of the resolved ones](https://webpack.js.org/configuration/resolve/#resolve-extensions). To fix that add it back to `resolve.extensions`.
 
-```sh
-npm install
+```js
+{
+  resolve: {
+    extensions: [".js", ".json", ...]
+  }
+}
 ```
 
-This module is written in ES6 and uses [Babel](http://babeljs.io/) for ES5
-transpilation. Widely consumable JavaScript can be produced by running:
-
-```sh
-npm run build
-```
-
-Once `npm run build` has run, you may `import` or `require()` directly from
-node.
-
-After developing, the full test suite can be evaluated by running:
-
-```sh
-npm test
-```
-
-When you're ready to test your new functionality on a real project, you can run
-
-```sh
-npm pack
-```
-
-It will `build`, `test` and then create a `.tgz` archive which you can then install in your project folder
-
-```sh
-npm install [module name with version].tar.gz
-```
+If you're using Webpack 1 then upgrade to a newer version.
 
 ## License
 
 [MIT](LICENSE)
-[npm]: https://www.npmjs.org/package/react-phone-number-input
-[npm-badge]: https://img.shields.io/npm/v/react-phone-number-input.svg?style=flat-square
-[travis]: https://travis-ci.org/halt-hammerzeit/react-phone-number-input
-[travis-badge]: https://img.shields.io/travis/halt-hammerzeit/react-phone-number-input/master.svg?style=flat-square
-[coveralls]: https://coveralls.io/r/halt-hammerzeit/react-phone-number-input?branch=master
-[coveralls-badge]: https://img.shields.io/coveralls/halt-hammerzeit/react-phone-number-input/master.svg?style=flat-square
