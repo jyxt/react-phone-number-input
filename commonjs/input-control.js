@@ -147,11 +147,11 @@ function formatPhoneNumber(value, country, metadata) {
  * @param {string} value = E.164 phone number.
  * @param  {object} metadata - `libphonenumber-js` metadata
  * @example
- * parseNumber('+78005553535')
+ * parsePhoneNumber('+78005553535')
  * // returns `{ country: 'RU', phone: '8005553535' }`
  */
 function parsePhoneNumber(value, metadata) {
-	return (0, _custom.parse)(value || '', metadata);
+	return (0, _custom.parseNumber)(value || '', metadata);
 }
 
 /**
@@ -165,7 +165,7 @@ function parsePhoneNumber(value, metadata) {
  * // returns '88005553535'
  */
 function generateNationalNumberDigits(parsed_phone, metadata) {
-	return (0, _custom.format)(parsed_phone, 'National', metadata).replace(/\D/g, '');
+	return (0, _custom.formatNumber)(parsed_phone, 'National', metadata).replace(/\D/g, '');
 }
 
 /**
@@ -217,7 +217,7 @@ function migrateParsedInputForNewCountry(value, previous_country, new_country, m
 				// Even if the phone number belongs to whole another country
 				// it will still be parsed into some national phone number.
 				var partial_national_significant_number = get_national_significant_number_part(value, previous_country, metadata);
-				return (0, _custom.format)(partial_national_significant_number, previous_country, 'E.164', metadata);
+				return (0, _custom.formatNumber)(partial_national_significant_number, previous_country, 'E.164', metadata);
 			}
 		}
 
@@ -259,7 +259,7 @@ function e164(number, country, metadata) {
 		return;
 	}
 
-	return (0, _custom.format)(partial_national_significant_number, country, 'E.164', metadata);
+	return (0, _custom.formatNumber)(partial_national_significant_number, country, 'E.164', metadata);
 }
 
 // If the phone number being input is an international one

@@ -283,6 +283,10 @@ var PhoneNumberInput = (0, _reactLifecyclesCompat2.default)(_class = (_temp = _c
 
 			// If the default country changed.
 			// (e.g. in case of ajax GeoIP detection after page loaded)
+			// then select it but only if no phone number has been entered so far.
+			// Because if the user has already started inputting a phone number
+			// then he's okay with no country being selected at all ("International")
+			// and doesn't want to be disturbed, doesn't want his input to be screwed, etc.
 			if (new_default_country !== old_default_country && !country && !value && !new_value) {
 				return _extends({}, new_state, {
 					country: new_default_country
@@ -302,6 +306,9 @@ var PhoneNumberInput = (0, _reactLifecyclesCompat2.default)(_class = (_temp = _c
 				} else if (new_state.country_select_options) {
 					return new_state;
 				}
+
+			// https://github.com/facebook/react/issues/12562
+			return null;
 		}
 	}]);
 
@@ -695,4 +702,4 @@ function generate_parsed_input(value, parsed_number, props) {
 
 	return value;
 }
-//# sourceMappingURL=input.js.map
+//# sourceMappingURL=Input.js.map
